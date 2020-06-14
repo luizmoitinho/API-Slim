@@ -1,4 +1,5 @@
 
+
 CREATE DATABASE db_geren_lojas CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 USE db_geren_lojas;
