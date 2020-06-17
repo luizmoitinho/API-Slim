@@ -7,6 +7,7 @@ use App\Controllers\FuncaoController;
 use App\Controllers\DepartamentoController;
 use App\Controllers\BlocoController;
 use App\Controllers\LocalController;
+use App\Controllers\UsuarioController;
 
 use Tuupola\Middleware\HttpBasicAuthentication;
 
@@ -40,6 +41,13 @@ $app->group('', function() use ($app){
   $app->put('/local', LocalController::class.':updateLocal');
   $app->delete('/local', LocalController::class.':deleteLocal');
 
+  // Rotas para manipulação de departamentos
+  $app->get('/usuario', UsuarioController::class.':getAllUsuarios');
+  $app->put('/usuario', UsuarioController::class.':updateLocal');
+  $app->delete('/usuario', UsuarioController::class.':deleteLocal');
+
 });
-// =============================================
+
+
+  // =============================================
 $app->run();
