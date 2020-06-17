@@ -32,6 +32,7 @@ $app->group('', function() use ($app){
   $app->get('/bloco', BlocoController::class.':getAllBlocos');
   $app->post('/bloco', BlocoController::class.':insertBloco');
   $app->put('/bloco', BlocoController::class.':updateBloco');
+  $app->delete('/bloco', BlocoController::class.':deleteBloco');
 });
 // =============================================
 $app->run();
