@@ -29,8 +29,8 @@ final class DepartamentoModel{
     return $this->nm_departamento;
   }
 
-
   public function setIdDepartamento(int $id_dep): DepartamentoModel{
+
     $this->id_departamento =  $id_dep;
     return $this;
   }
@@ -39,7 +39,5 @@ final class DepartamentoModel{
     $this->nm_departamento =  $nm_dep;
     return $this;
   }
-
-
 
 }

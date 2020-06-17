@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 17, 2020 at 02:56 AM
+-- Generation Time: Jun 17, 2020 at 03:40 AM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.3.5
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tb_bloco` (
   `id_bloco` int(11) NOT NULL,
-  `nm_local` varchar(45) NOT NULL
+  `nm_bloco` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -161,7 +161,8 @@ INSERT INTO `tb_usuario` (`id_usuario`, `id_departamento`, `id_funcao`, `nm_usua
 -- Indexes for table `tb_bloco`
 --
 ALTER TABLE `tb_bloco`
-  ADD PRIMARY KEY (`id_bloco`);
+  ADD PRIMARY KEY (`id_bloco`),
+  ADD UNIQUE KEY `UN_NM_BLOCO` (`nm_bloco`);
 
 --
 -- Indexes for table `tb_departamento`
