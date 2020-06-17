@@ -1,22 +1,45 @@
 <?php
 
 use function src\slimConfiguration;
-use App\Controllers\ProdutoController;
-use App\Controllers\LojaController;
+use function src\basicAuth;
+
+use App\Controllers\FuncaoController;
+use App\Controllers\DepartamentoController;
+use App\Controllers\BlocoController;
+use App\Controllers\LocalController;
+
+use Tuupola\Middleware\HttpBasicAuthentication;
 
 $app = new \Slim\App(slimConfiguration());
 
 // =============================================
 
-$app->get('/loja', LojaController::class.':getLojas');
-$app->post('/loja', LojaController::class.':insertLoja');
-$app->put('/loja', LojaController::class.':updateLoja');
-$app->delete('/loja', LojaController::class.':deleteLoja');
+$app->group('', function() use ($app){
 
-$app->get('/produto', ProdutoController::class.':getProdutos');
-$app->post('/produto', ProdutoController::class.':insertProduto');
-$app->put('/produto', ProdutoController::class.':updateProduto');
-$app->delete('/produto', ProdutoController::class.':deleteProduto');
+  // Rotas para manipulação de funções
+  $app->get('/funcao', FuncaoController::class.':getAllFuncoes');
+  $app->post('/funcao', FuncaoController::class.':insertFuncao');
+  $app->put('/funcao', FuncaoController::class.':updateFuncao');
+  $app->delete('/funcao', FuncaoController::class.':deleteFuncao');
 
+  // Rotas para manipulação de departamentos
+  $app->get('/departamento', DepartamentoController::class.':getAllDepartamentos');
+  $app->post('/departamento', DepartamentoController::class.':insertDepartamento');
+  $app->put('/departamento', DepartamentoController::class.':updateDepartamento');
+  $app->delete('/departamento', DepartamentoController::class.':deleteDepartamento');
+
+
+  // Rotas para manipulação de blocos
+  $app->get('/bloco', BlocoController::class.':getAllBlocos');
+  $app->post('/bloco', BlocoController::class.':insertBloco');
+
+
+   // Rotas para manipulação de departamentos
+  $app->get('/local', LocalController::class.':getAllLocais');
+  $app->post('/local', LocalController::class.':insertLocal');
+  $app->put('/local', LocalController::class.':updateLocal');
+  $app->delete('/local', LocalController::class.':deleteLocal');
+
+});
 // =============================================
 $app->run();
