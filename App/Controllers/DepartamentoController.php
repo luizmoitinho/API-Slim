@@ -47,10 +47,9 @@ final class DepartamentoController{
       $res = $this->departamentoDAO->updateDepartamento($departamento);
 
       if($res)
-      if($res)
-      return $response->withJson(['message'=>'Departamento atualizado com sucesso']);
+        return $response->withJson(['message'=>'Departamento atualizado com sucesso']);
 
-    return $response->withJson(['message'=>'Não foi possível atualizar o departamento']);
+      return $response->withJson(['message'=>'Não foi possível atualizar o departamento']);
     
   }
 

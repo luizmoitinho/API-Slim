@@ -6,6 +6,7 @@ use function src\basicAuth;
 use App\Controllers\FuncaoController;
 use App\Controllers\DepartamentoController;
 use App\Controllers\BlocoController;
+use App\Controllers\LocalController;
 
 use Tuupola\Middleware\HttpBasicAuthentication;
 
@@ -31,6 +32,14 @@ $app->group('', function() use ($app){
   // Rotas para manipulação de blocos
   $app->get('/bloco', BlocoController::class.':getAllBlocos');
   $app->post('/bloco', BlocoController::class.':insertBloco');
+
+
+   // Rotas para manipulação de departamentos
+  $app->get('/local', LocalController::class.':getAllLocais');
+  $app->post('/local', LocalController::class.':insertLocal');
+  $app->put('/local', LocalController::class.':updateLocal');
+  $app->delete('/local', LocalController::class.':deleteLocal');
+
 });
 // =============================================
 $app->run();
