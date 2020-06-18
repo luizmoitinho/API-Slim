@@ -44,7 +44,8 @@ $app->group('', function() use ($app){
   // Rotas para manipulação de departamentos
   $app->get('/usuario', UsuarioController::class.':getAllUsuarios');
   $app->post('/usuario', UsuarioController::class.':insertUsuario');
-  $app->delete('/usuario', UsuarioController::class.':deleteLocal');
+  $app->put('/usuario', UsuarioController::class.':updateUsuario');
+  $app->delete('/usuario', UsuarioController::class.':deleteUsuario');
 
 });
 

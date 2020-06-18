@@ -49,14 +49,61 @@ final class UsuarioController{
   }
   
   public function updateUsuario(Request $request,Response $response, array $args): Response{
+    $data = $request->getParsedBody();
 
+    $usuario = new UsuarioModel();
+    $usuario->setIdUsuario(intval($data['id_usuario']))
+            ->setMatUsuario(intval(trim($data['matricula_usuario'])));
+
+    $usuarioDB = $this->usuarioDAO->getUserById($usuario);
+    
+    if($usuarioDB !== False){
+        //Atualizar os dados restantes do usuário
+        $usuario->setIdFuncao( intval($data['id_funcao']) )
+                ->setIdDepartamento(intval($data['id_departamento']))
+                ->setNmUsuario(trim($data['nm_usuario']))
+                ->setEmailUsuario(trim($data['email_usuario']))
+                ->setTelUsuario(trim($data['tel_usuario']));
+        
+        if(array_key_exists('nv_acesso',$data))
+          $usuario->setNvAcesso($data['nv_acesso']);
+        if(array_key_exists('status_ativado',$data))
+          $usuario->setStatusUsuario($data['status_ativado']);
+
+        $errors = $this->isValidData($usuario,0);
+        if($errors === True){
+          $res =  $this->usuarioDAO->updateUsuario($usuario);
+          if($res)
+            return $response->withJson(['message'=>'Sua conta foi atualizada com sucesso.']);
+          return $response->withJson(['message'=>'Não foi possível realizar a atualização.']);
+        }
+        return $response->withJson($errors); 
+    }else{
+      return $response->withJson(['message'=>'Usuário não encontrado.']);
+
+    }
+  
   }
 
   public function deleteUsuario(Request $request,Response $response, array $args): Response{
+    $data =  $request->getParsedBody();
+    $usuario =  new UsuarioModel();
+    
+    $usuario->setIdUsuario(intval($data['id_usuario']));
+
+    if(intval($data['id_usuario']) && $this->usuarioDAO->isValidUserById($usuario)){
+      $res = $this->usuarioDAO->deleteUsuario($usuario);
+      if($res)
+        return $response->withJson(['message'=>'Conta removida com sucesso.']);
+      return $response->withJson(['message'=>'Não foi possível remover a conta cadastrada.']);
+
+    }else{
+      return $response->withJson(['message'=>'Usuário não encontrado.']);
+    }
 
   }
 
-  private function isValidData(UsuarioModel $usuario){
+  private function isValidData(UsuarioModel $usuario, $action=1){
     $errors =  array();
     $this->validateEmail($usuario,$errors);
     $this->validateMatricula($usuario,$errors);
@@ -68,9 +115,9 @@ final class UsuarioController{
       array_push($errors,'O campo nome não foi preenchido.');
     if(empty($usuario->getTelUsuario()))
       array_push($errors,'O campo telefone não foi preenchido.');
-    if(empty($usuario->getSenhaUsuario()) || empty($usuario->getSenhaConfirmUsuario()))
+    if((empty($usuario->getSenhaUsuario()) || empty($usuario->getSenhaConfirmUsuario()) ) && $action == 1)
       array_push($errors,'O(s) campo(s) senha(s) deve(m) ser preenchido(s).');
-    elseif($usuario->getSenhaUsuario() !== $usuario->getSenhaConfirmUsuario())
+    elseif(($usuario->getSenhaUsuario() !== $usuario->getSenhaConfirmUsuario()) && $action == 1)
       array_push($errors,'As senhas não são iguais.');
 
     return count($errors) > 0 ? $errors : True;
@@ -85,8 +132,7 @@ final class UsuarioController{
 
     elseif(!$this->usuarioDAO->isValidEmail($usuario))
         array_push($errors,'O e-mail preenchido já está em uso.');
-    
-
+  
   }
 
   private function validateMatricula(UsuarioModel $usuario, &$errors){

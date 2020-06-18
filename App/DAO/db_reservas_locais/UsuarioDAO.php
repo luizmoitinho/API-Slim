@@ -13,6 +13,22 @@ final class UsuarioDAO extends Conexao{
     return $usuarios;
   }
 
+  public function getUserById(UsuarioModel $usuario){
+    $statement = $this->pdo
+                     ->prepare('SELECT id_usuario,id_funcao,id_departamento,nm_usuario,tel_usuario,email_usuario,
+                                        matricula_usuario,status_ativado,nv_acesso
+                              FROM tb_usuario WHERE id_usuario = :idUsuario and  matricula_usuario = :matUsuario;');
+    
+    $res = $statement->execute(array(
+      'idUsuario'=>$usuario->getIdUsuario(),
+      'matUsuario'=>$usuario->getMatUsuario()
+    ));
+
+    if($res){
+      return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return False;
+  }
   public function insertUsuario(UsuarioModel $usuario){
     $statement =  $this->pdo
                         ->prepare('INSERT INTO tb_usuario values (null, :id_funcao,
@@ -43,11 +59,47 @@ final class UsuarioDAO extends Conexao{
   }
 
   public function updateUsuario(UsuarioModel $usuario){
+    $statement =  $this->pdo
+                       ->prepare('UPDATE tb_usuario set id_funcao = :idFuncao,
+                                                        id_departamento =  :idDepartamento,
+                                                        nm_usuario = :nmUsuario,
+                                                        tel_usuario = :telUsuario,
+                                                        email_usuario = :emailUsuario,
+                                                        matricula_usuario = :matUsuario,
+                                                        nv_acesso = :nvAcesso,
+                                                        status_ativado = :statusAtivado
+                                  WHERE id_usuario = :idUsuario');
 
+    $res =  $statement->execute(array(
+      'idFuncao'=>$usuario->getIdFuncao(),
+      'idDepartamento'=>$usuario->getIdDepartamento(),
+      'nmUsuario'=>$usuario->getNmUsuario(),
+      'telUsuario'=>$usuario->getTelUsuario(),
+      'emailUsuario'=>$usuario->getEmailUsuario(),
+      'matUsuario'=>$usuario->getMatUsuario(),
+      'nvAcesso'=>$usuario->getNvAcesso(),
+      'statusAtivado'=>$usuario->getStatusUsuario(),
+      'idUsuario'=>$usuario->getIdUsuario()
+    ));
+
+    if($res)
+      return True;
+    return False;
   }
 
-  public function deleteUsuario(UsuarioModel $usuario){
 
+
+  public function deleteUsuario(UsuarioModel $usuario){
+    $statement =  $this->pdo->prepare('DELETE FROM tb_usuario 
+                                       WHERE id_usuario = :idUsuario;');
+
+    $res = $statement->execute(array(
+      'idUsuario' => $usuario->getIdUsuario()
+    ));
+
+    if($res)
+      return True;
+    return False;
   }
 
   public function isValidEmail(UsuarioModel $usuario){
@@ -104,14 +156,26 @@ final class UsuarioDAO extends Conexao{
 
     }
 
-    echo 'linhas>'.$statement->rowCount()>0;
-
     if($statement->rowCount()>0)
       return False;
     return True;
 
   }
 
+  public function isValidUserById(UsuarioModel $usuario){
+    $statement =  $this->pdo
+                        ->prepare('SELECT id_usuario from tb_usuario
+                                    WHERE id_usuario = :idUsuario;');
+
+    $statement->execute(array(
+    'idUsuario'=>$usuario->getIdUsuario(),
+    ));
+
+    if($statement->rowCount()>0)
+      return True;
+    return False;
+
+  }
 
 
 }
