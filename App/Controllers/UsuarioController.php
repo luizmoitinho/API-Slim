@@ -48,6 +48,32 @@ final class UsuarioController{
 
   }
   
+  public function loginUsuario(Request $request,Response $response, array $args): Response{
+    $data =  $request->getParsedBody();
+    $errors =  array();
+    if(empty($data['matricula_usuario']))
+      array_push($errors,'O campo matrícula deve ser preenchido.');
+    elseif(!intval($data['matricula_usuario']))
+      array_push($errors,'A matricula é inválida');
+    if(empty($data['senha_usuario']) )
+      array_push($errors,'O campo senha deve ser preenchido.');
+
+    if(count($errors)>0){
+      return $response->withJson($errors);
+    }else{
+      $usuario = new UsuarioModel();
+      $usuario->setMatUsuario(intval($data['matricula_usuario']))
+              ->setSenhaUsuario(md5($data['senha_usuario']));
+      $res = $this->usuarioDAO->loginUsuario($usuario);
+      if($res){
+        if($res['status_ativado'] == 'N')
+         return $response->withJson(['message'=>'Seu cadastro se encontra em análise.']);
+        return $response->withJson($res);
+      }
+      return $response->withJson(['message'=>'Matricula ou senha inválidos.']);
+    }
+  }
+
   public function updateUsuario(Request $request,Response $response, array $args): Response{
     $data = $request->getParsedBody();
 
@@ -102,6 +128,8 @@ final class UsuarioController{
     }
 
   }
+
+
 
   private function isValidData(UsuarioModel $usuario, $action=1){
     $errors =  array();

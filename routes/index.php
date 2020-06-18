@@ -15,6 +15,8 @@ $app = new \Slim\App(slimConfiguration());
 
 // =============================================
 
+$app->post('/login', UsuarioController::class.':loginUsuario');
+
 $app->group('', function() use ($app){
 
   // Rotas para manipulação de funções
@@ -42,12 +44,14 @@ $app->group('', function() use ($app){
   $app->delete('/local', LocalController::class.':deleteLocal');
 
   // Rotas para manipulação de departamentos
+
   $app->get('/usuario', UsuarioController::class.':getAllUsuarios');
   $app->post('/usuario', UsuarioController::class.':insertUsuario');
   $app->put('/usuario', UsuarioController::class.':updateUsuario');
   $app->delete('/usuario', UsuarioController::class.':deleteUsuario');
 
 });
+
 
 
   // =============================================

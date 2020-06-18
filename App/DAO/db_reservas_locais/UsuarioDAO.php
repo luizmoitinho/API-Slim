@@ -102,6 +102,22 @@ final class UsuarioDAO extends Conexao{
     return False;
   }
 
+
+  public function loginUsuario(UsuarioModel $usuario){
+    $statement =  $this->pdo->prepare('SELECT id_usuario,id_funcao,id_departamento,nm_usuario,tel_usuario,email_usuario,status_ativado,nv_acesso
+                                      FROM tb_usuario WHERE matricula_usuario = :matUsuario AND senha_usuario = :senhaUsuario;');
+    
+    $res =  $statement->execute(array(
+      'matUsuario'=>$usuario->getMatUsuario(),
+      'senhaUsuario'=>$usuario->getSenhaUsuario(),
+    ));
+
+    if($res){
+      return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+    return False;
+
+  }
   public function isValidEmail(UsuarioModel $usuario){
 
     if(!empty($usuario->getIdUsuario())) {
