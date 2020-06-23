@@ -50,5 +50,13 @@ class BlocoDAO extends Conexao{
     if($res)
       return True;
     return False;
+
+final class BlocoDAO extends Conexao{
+  
+  public function getAllBlocos(){
+    $blocos = $this->pdo->query('SELECT * FROM tb_bloco')
+                        ->fetchAll(\PDO::FETCH_ASSOC); 
+    return $blocos;                                     
   }
+
 }

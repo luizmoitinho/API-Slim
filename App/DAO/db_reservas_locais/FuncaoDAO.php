@@ -41,7 +41,7 @@ class FuncaoDAO extends Conexao{
     $res = $statement->execute(array(
       'id_funcao'=> $funcao->getIdFuncao()
     ));
-
+    
     if($res)
       return True;
     return False;
