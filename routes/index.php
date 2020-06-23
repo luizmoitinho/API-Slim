@@ -7,12 +7,15 @@ use App\Controllers\FuncaoController;
 use App\Controllers\DepartamentoController;
 use App\Controllers\BlocoController;
 use App\Controllers\LocalController;
+use App\Controllers\UsuarioController;
 
 use Tuupola\Middleware\HttpBasicAuthentication;
 
 $app = new \Slim\App(slimConfiguration());
 
 // =============================================
+
+$app->post('/login', UsuarioController::class.':loginUsuario');
 
 $app->group('', function() use ($app){
 
@@ -40,6 +43,16 @@ $app->group('', function() use ($app){
   $app->put('/local', LocalController::class.':updateLocal');
   $app->delete('/local', LocalController::class.':deleteLocal');
 
+  // Rotas para manipulação de departamentos
+
+  $app->get('/usuario', UsuarioController::class.':getAllUsuarios');
+  $app->post('/usuario', UsuarioController::class.':insertUsuario');
+  $app->put('/usuario', UsuarioController::class.':updateUsuario');
+  $app->delete('/usuario', UsuarioController::class.':deleteUsuario');
+
 });
-// =============================================
+
+
+
+  // =============================================
 $app->run();

@@ -35,6 +35,10 @@ final class UsuarioModel{
   * @var string
   */
   private $senha_usuario;
+    /** 
+  * @var string
+  */
+  private $senha_confirm;
   /** 
   * @var int
   */
@@ -44,6 +48,12 @@ final class UsuarioModel{
   */
   private $status_ativado;
 
+
+  public function __construct(){
+    $this->nv_acesso = 4;
+    $this->status_ativado = 'N';
+  
+  }
 
   /** 
   * @return int
@@ -83,6 +93,13 @@ final class UsuarioModel{
   /** 
   * @return string
   */
+  public function getMatUsuario(){
+    return $this->matricula_usuario;
+  }
+  /** 
+  * @return string
+  */
+
   public function getTelUsuario(){
     return $this->tel_usuario;
   }
@@ -93,6 +110,14 @@ final class UsuarioModel{
     return $this->senha_usuario;
   }
   /** 
+
+  * @return string
+  */
+  public function getSenhaConfirmUsuario(){
+    return $this->senha_confirm;
+  }
+  /** 
+
   * @return int
   */
   public function getNvAcesso(){
@@ -135,12 +160,24 @@ final class UsuarioModel{
     $this->tel_usuario = $tel_usuario;
     return $this;
   }
+
+  public function setMatUsuario(int $matricula_usuario): UsuarioModel{
+    $this->matricula_usuario = $matricula_usuario;
+    return $this;
+  }
+
   
   public function setSenhaUsuario(string $senha_usuario): UsuarioModel{
     $this->senha_usuario = $senha_usuario;
     return $this;
   }
   
+  public function setSenhaConfirmUsuario(string $senha_confirm): UsuarioModel{
+    $this->senha_confirm = $senha_confirm;
+    return $this;
+  }
+
+
   public function setNvAcesso(int $nv_acesso): UsuarioModel{
     $this->nv_acesso = $nv_acesso;
     return $this;
