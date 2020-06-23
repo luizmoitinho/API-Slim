@@ -35,6 +35,8 @@ $app->group('', function() use ($app){
   // Rotas para manipulação de blocos
   $app->get('/bloco', BlocoController::class.':getAllBlocos');
   $app->post('/bloco', BlocoController::class.':insertBloco');
+  $app->put('/bloco', BlocoController::class.':updateBloco');
+  $app->delete('/bloco', BlocoController::class.':deleteBloco');
 
 
    // Rotas para manipulação de departamentos
@@ -43,8 +45,7 @@ $app->group('', function() use ($app){
   $app->put('/local', LocalController::class.':updateLocal');
   $app->delete('/local', LocalController::class.':deleteLocal');
 
-  // Rotas para manipulação de departamentos
-
+  // Rotas para manipulação de usuarios
   $app->get('/usuario', UsuarioController::class.':getAllUsuarios');
   $app->post('/usuario', UsuarioController::class.':insertUsuario');
   $app->put('/usuario', UsuarioController::class.':updateUsuario');
